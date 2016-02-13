@@ -2,12 +2,13 @@ var http = require('http');
 var zlib = require('zlib');
 var iconvl = require('iconv-lite');
 var xml2js = require('xml2js');
-var movie = require('./movie')
+var Movie = require('./movie')
+var Serie = require('./serie')
 
-function XMLtv(channel, date)
+function XMLtv(url)
 {
     _this = this;
-    url = "http://xmltv.tvsajten.com/xmltv/" + channel + "_" + date.toISOString().slice(0,10) + ".xml.gz";
+    url = url;
 }
 
 XMLtv.prototype.getMovies = function(callback){
@@ -21,11 +22,11 @@ XMLtv.prototype.getMovies = function(callback){
         
         res.on('end', function(){
             var buffer = Buffer.concat(chunks);
-            zlib.unzip(buffer, function(err, ungzipped){
+            zlib.gunzip(buffer, function(err, ungzipped){
                     if(!err)
                     {
                         var decoded = iconvl.decode(ungzipped, 'iso-8859-1'); 
-                        return _this.parseXML(decoded);
+                        callback(_this.parseMovies(decoded));
                     }else
                     {
                         console.log(err);
@@ -35,7 +36,7 @@ XMLtv.prototype.getMovies = function(callback){
     });    
 }
 
-XMLtv.prototype.parseXML = function(xml)
+XMLtv.prototype.parseMovies = function(xml)
 {
     var movies = [];
     xml2js.parseString(xml, function(err, result){
@@ -45,13 +46,32 @@ XMLtv.prototype.parseXML = function(xml)
             {
                 if(p.category[0]._ == "Movie")
                 {
-                    movies.push(new movie(p));
+                    movies.push(new Movie(p));
                 }
             }
         }
     });
     
     return movies;
+}
+
+XMLtv.prototype.parseSeries = function(xml)
+{
+    var series = [];
+    xml2js.parseString(xml, function(err, result){
+        for(var p of result.tv.programme)
+        {
+            if(p.category)
+            {
+                if(p.category[0]._ == "Series")
+                {
+                    series.push(new Serie(p));
+                }
+            }
+        }
+    });
+    
+    return series;
 }
 
 module.exports = XMLtv;

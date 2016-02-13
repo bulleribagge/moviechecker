@@ -2,7 +2,7 @@
 
 var Utils = require("./utils");
 
-class Movie
+class Serie
 {
 	constructor(m)
 	{
@@ -12,9 +12,9 @@ class Movie
         this.start = Utils.parseDate(m.$.start);
         this.end = Utils.parseDate(m.$.stop);
         this.length = (this.end.getTime() - this.start.getTime())/1000/60;
-        this.directors = m.credits[0].director == undefined ? [] : m.credits[0].director;
-        this.actors = m.credits[0].actor == undefined ? [] : m.credits[0].actor;
+        this.season = parseInt(m['episode-num'][0]._.match(/\d+/g)[0] + 1);
+        this.episode = parseInt(m['episode-num'][0]._.match(/\d+/g)[1]) + parseInt(1);
 	}
 }
 
-module.exports = Movie;
+module.exports = Serie;
