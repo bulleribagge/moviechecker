@@ -28,6 +28,7 @@ describe("Parse test", function()
             'Jean-Paul Rouve',
             'Jacky Nercessian'
         ]);
+        expect(movies[0].type).toEqual('movie');
     });
     
     it("with empty input", function()
@@ -58,12 +59,13 @@ describe("Parse test", function()
        var tvseries = xmltv.parseSeries(fm.getValidXMLSerie());
        expect(tvseries[0].season).toEqual(1);
        expect(tvseries[0].episode).toEqual(4);
+       expect(tvseries[0].type).toEqual('serie');
     });
 });
 
 describe("Util test", function(){
    it("url creator", function(){
-      var res = Util.getUrlsForChannelAndDate("svt1.svt.se", new Date("2016-02-13"));
+      var res = Util.getUrlsForChannelAndDate("svt1.svt.se", new Date("2016-02-13"), 7);
       expect(res[0]).toEqual("http://xmltv.tvsajten.com/xmltv/svt1.svt.se_2016-02-13.xml.gz");
       expect(res[1]).toEqual("http://xmltv.tvsajten.com/xmltv/svt1.svt.se_2016-02-14.xml.gz");
       expect(res[2]).toEqual("http://xmltv.tvsajten.com/xmltv/svt1.svt.se_2016-02-15.xml.gz");

@@ -14,6 +14,7 @@ class Movie
         this.length = (this.end.getTime() - this.start.getTime())/1000/60;
         this.directors = m.credits[0].director == undefined ? [] : m.credits[0].director;
         this.actors = m.credits[0].actor == undefined ? [] : m.credits[0].actor;
+        this.type = "movie";
 	}
 }
 

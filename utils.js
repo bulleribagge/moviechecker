@@ -6,10 +6,10 @@ class Utils
         return new Date(str.slice(0,4) + "-" + str.slice(4,6) +"-"+ str.slice(6,8) +" "+ str.slice(8,10) + ":" + str.slice(10,12));
     }
     
-    static getUrlsForChannelAndDate(channel, date)
+    static getUrlsForChannelAndDate(channel, date, days)
     {
         var urls = new Array();
-        for(var i = 0; i < 7; i++)
+        for(var i = 0; i < days; i++)
         {
             urls.push("http://xmltv.tvsajten.com/xmltv/" + channel + "_" + Utils.addDays(date, i).toISOString().slice(0,10) + ".xml.gz");
         }

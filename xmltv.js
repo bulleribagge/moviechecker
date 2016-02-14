@@ -8,10 +8,19 @@ var Serie = require('./serie')
 function XMLtv(url)
 {
     _this = this;
-    url = url;
+    _this.url = url;
 }
 
-XMLtv.prototype.getMovies = function(callback){
+XMLtv.prototype.getStuff = function(callback){
+    _this.getXML(function(err, xml){
+        var stuff = [];
+        Array.prototype.push.apply(stuff, _this.parseMovies(xml));
+        Array.prototype.push.apply(stuff, _this.parseSeries(xml));
+        callback(stuff);
+    });
+}
+
+XMLtv.prototype.getXML = function(callback){
     var movies = [];
     http.get(_this.url, function(res){
         var chunks = [];
@@ -23,15 +32,19 @@ XMLtv.prototype.getMovies = function(callback){
         res.on('end', function(){
             var buffer = Buffer.concat(chunks);
             zlib.gunzip(buffer, function(err, ungzipped){
-                    if(!err)
-                    {
-                        var decoded = iconvl.decode(ungzipped, 'iso-8859-1'); 
-                        callback(_this.parseMovies(decoded));
-                    }else
-                    {
-                        console.log(err);
-                    }
+                if(!err)
+                {
+                    var decoded = iconvl.decode(ungzipped, 'iso-8859-1'); 
+                    callback(null, decoded);
+                }else
+                {
+                    console.log(err);
+                }
             });
+        });
+        
+        res.on('error', function(err){
+           callback(err.message, null); 
         });
     });    
 }
