@@ -27,4 +27,8 @@ FileMocks.prototype.getValidXMLSerie = function(){
     return "<tv generator-info-name=\"xmltv.TVsajten.com\" generator-info-url=\"http://tvsajten.com/xmltv\"><programme start=\"20160306231500 +0100\" stop=\"20160306234500 +0100\" channel=\"svt24.svt.se\"><title lang=\"sv\">Tvärs över Sydamerika</title><desc lang=\"sv\">Norsk resereportageserie från 2014. Reskamraterna i \"Team Bachstad\" - Øystein Bache och Rune Gokstad - har tagit sig för att korsa den sydamerikanska kontinenten, en bilresa på närmare 6000 km. Denna gång: expeditionen är framme i Argentina, där Øystein och Rune får uppleva både att stoppas av narkotikapolisen och närkontakt med en krokodil. Från 1/3 i SVT1. Även i SVT1 8/3.</desc><date>2014</date><category lang=\"sv\">Series</category><episode-num system=\"xmltv_ns\">0 . 3/6 .</episode-num><episode-num system=\"onscreen\">Del 4 av 6 säsong 1</episode-num></programme></tv>";
 }
 
+FileMocks.prototype.getComposedEmail = function(){
+    return `<h1>Filmer</h1><b>söndag, februari 21a</b><p>01:50 Paul 2011</p><p>03:50 Paul 2 2013</p><b>måndag, februari 22a</b><p>14:35 Flerp 1956</p><b>tisdag, februari 23e</b><p>13:55 Flottans glada gossar 1954</p><p>23:30 En gång om året 2012</p><h1>Seriepremiärer</h1><b>söndag, februari 21a</b><p>21:00 Ansikte i ansiktet</p><p>21:00 House of Thrones</p><b>måndag, februari 22a</b><p>20:00 Game of Cards</p>`;
+}
+
 module.exports = FileMocks;

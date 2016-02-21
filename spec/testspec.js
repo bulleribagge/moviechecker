@@ -64,6 +64,12 @@ describe("Parse test", function()
 });
 
 describe("Util test", function(){
+    var fm;
+    
+    beforeAll(function(){
+        fm = new FileMocks();
+    });
+    
    it("url creator", function(){
       var res = Util.getUrlsForChannelAndDate("svt1.svt.se", new Date("2016-02-13"), 7);
       expect(res[0]).toEqual("http://xmltv.tvsajten.com/xmltv/svt1.svt.se_2016-02-13.xml.gz");
@@ -75,13 +81,26 @@ describe("Util test", function(){
       expect(res[6]).toEqual("http://xmltv.tvsajten.com/xmltv/svt1.svt.se_2016-02-19.xml.gz");
    });
    
-   it("compose email", function(){
-       var movies = [
-           {type: 'movie', start: new Date(), title: 'Mark Twain: Buttplug'},
-           {type: 'movie', start: new Date(), title: 'Mark Twain: Buttplug 2'},
-           {type: 'movie', start: Util.addDays(new Date(), 1), title: 'Mark Twain: Buttplug 3'}
-        ];
-           
-        var res = Util.compose(movies);
+   it("compose test", function(){
+      var movies = [
+          {start: new Date('2016-02-21 01:50'), type: 'movie', title: 'Paul', year: '2011'},
+          {start: new Date('2016-02-21 03:50'), type: 'movie', title: 'Paul 2', year: '2013'},
+          {start: new Date('2016-02-22 14:35'), type: 'movie', title: 'Flerp', year: '1956'},
+          {start: new Date('2016-02-23 13:55'), type: 'movie', title: 'Flottans glada gossar', year: '1954'},
+          {start: new Date('2016-02-23 23:30'), type: 'movie', title: 'En gång om året', year: '2012'}
+      ];
+      var series = [
+            {start: new Date('2016-02-21 21:00'), type: 'serie', title: 'Ansikte i ansiktet', season: 1, episode: 1},
+            {start: new Date('2016-02-21 21:00'), type: 'serie', title: 'House of Thrones', season: 1, episode: 1},
+            {start: new Date('2016-02-22 20:00'), type: 'serie', title: 'Game of Cards', season: 1, episode: 1}  
+      ];
+      
+      var html = Util.compose(movies, series);
+      expect(html).toEqual(fm.getComposedEmail());
+   });
+   
+   it("pad digits", function(){
+      expect(Util.pad(2, 2)).toEqual("02");
+      expect(Util.pad(20, 2)).toEqual("20"); 
    });
 });

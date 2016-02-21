@@ -30,6 +30,8 @@ class Utils
     
     static compose(movies, series)
     {
+        moment.locale('sv');
+        
         movies.sort(function(a,b){
             return a.start > b.start;
         });
@@ -38,7 +40,7 @@ class Utils
         
         if(movies.length > 0)
         {
-            htmlContent += "<h1>Movies</h1>";
+            htmlContent += "<h1>Filmer</h1>";
             
             var currDate = 0;
             
@@ -48,22 +50,33 @@ class Utils
                 {
                     htmlContent += "<b>" + moment(m.start).format("dddd, MMMM Do") + "</b>";
                 }
-                htmlContent += "<p>" + m.start.getHours() + ":" + m.start.getMinutes() + " " + m.title + " " + m.year + "</p>";
+                htmlContent += "<p>" + m.start.toTimeString().substring(0, 5) + " " + m.title + " " + m.year + "</p>";
                 
                 currDate = m.start.getDate();
             }
         }
         
+        series = series.filter(function(s)
+        {
+            return s.season == 1 && s.episode == 1;
+        });
+        
         if(series.length > 0)
         {
             htmlContent += "<h1>Seriepremiärer</h1>";
             
+            var currDate = 0;
+            
             for(var s of series)
             {
-                if(s.season == 1 && s.episode == 1)
+                if(s.start.getDate() != currDate)
                 {
-                    htmlContent += "<p>" + s.start.toDateString() + " " + s.type + " " + s.title + "</p>";
+                    htmlContent += "<b>" + moment(s.start).format("dddd, MMMM Do") + "</b>";
                 }
+                
+                htmlContent += "<p>" + s.start.toTimeString().substring(0, 5) + " " + s.title + "</p>";
+                
+                currDate = s.start.getDate();
             }
         }
         
@@ -89,6 +102,13 @@ class Utils
                 console.log(body);
             }
         });
+    }
+    
+    static pad(n, width, z) 
+    {
+        z = z || '0';
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     }
 }
 

@@ -1,12 +1,7 @@
 var XMLtv = require('./xmltv');
 var async = require('async');
 var Util = require('./utils');
-var nodemailer = require('nodemailer');
-var fs = require('fs');
-var iconvl =  require('iconv-lite');
-var moment = require('moment');
 
-moment.locale('sv');
 var date = new Date();
 
 var channels = ['svt1.svt.se', 'svt2.svt.se'];
