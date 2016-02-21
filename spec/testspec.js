@@ -74,4 +74,14 @@ describe("Util test", function(){
       expect(res[5]).toEqual("http://xmltv.tvsajten.com/xmltv/svt1.svt.se_2016-02-18.xml.gz");
       expect(res[6]).toEqual("http://xmltv.tvsajten.com/xmltv/svt1.svt.se_2016-02-19.xml.gz");
    });
+   
+   it("compose email", function(){
+       var movies = [
+           {type: 'movie', start: new Date(), title: 'Mark Twain: Buttplug'},
+           {type: 'movie', start: new Date(), title: 'Mark Twain: Buttplug 2'},
+           {type: 'movie', start: Util.addDays(new Date(), 1), title: 'Mark Twain: Buttplug 3'}
+        ];
+           
+        var res = Util.compose(movies);
+   });
 });

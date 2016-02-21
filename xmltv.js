@@ -34,7 +34,7 @@ XMLtv.prototype.getXML = function(callback){
             zlib.gunzip(buffer, function(err, ungzipped){
                 if(!err)
                 {
-                    var decoded = iconvl.decode(ungzipped, 'iso-8859-1'); 
+                    var decoded = iconvl.decode(ungzipped, 'iso-8859-1');
                     callback(null, decoded);
                 }else
                 {

@@ -2,7 +2,11 @@ var XMLtv = require('./xmltv');
 var async = require('async');
 var Util = require('./utils');
 var nodemailer = require('nodemailer');
+var fs = require('fs');
+var iconvl =  require('iconv-lite');
+var moment = require('moment');
 
+moment.locale('sv');
 var date = new Date();
 
 var channels = ['svt1.svt.se', 'svt2.svt.se'];
@@ -14,10 +18,12 @@ for(var ch of channels)
     Array.prototype.push.apply(urls, Util.getUrlsForChannelAndDate(ch, date, 7));
 }
 
+var movies = [];
+var series = [];
 var allStuff = [];
+var mailText = "";
 
 async.each(urls, function(url, callback){
-    console.log(url);
     var xmltv = new XMLtv(url);
     xmltv.getStuff(function(stuff){
         Array.prototype.push.apply(allStuff, stuff);
@@ -28,13 +34,15 @@ async.each(urls, function(url, callback){
     {
         if(s.type == "movie")
         {
-            console.log(s.start.toDateString() + " " + s.type + " " + s.title + " " + s.year);
+            movies.push(s);
         }else
         {
             if(s.season == 1 && s.episode == 1)
             {
-                console.log(s.start.toDateString() + " " + s.type + " " + s.title);
+                series.push(s);
             }
         }
     }
+    
+    Util.composeAndSendMail(['almenmartin@gmail.com'], movies, series);
 });
